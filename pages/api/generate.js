@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const prompt = `Genera un post para LinkedIn sobre "${topic}" con un tono ${tone}. El autor es ${profile.name}, un/a ${profile.profession} en ${profile.company}.`;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
     });
 
