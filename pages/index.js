@@ -40,17 +40,14 @@ export default function Home() {
 
     setLoading(true);
     try {
-        const baseURL = process.env.NODE_ENV === "production" 
-        ? "https://linkedin-generator-content.pages.dev" 
-        : "";
+       
       
-      const response = await axios.post(`${baseURL}/api/generate`, {
+      const response = await axios.post("/api/generate", {
         topic,
         profile,
         tone,
       });
-      
-
+    
       setGeneratedPost(response.data.post);
     } catch (error) {
       console.error("Error generando el post:", error);
