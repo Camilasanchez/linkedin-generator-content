@@ -1,0 +1,11 @@
+name = "linkedin-generator-content"
+account_id = "74d164b9af9fe87f55623b8228cb8a40"
+compatibility_date = "2024-02-04"
+main = "out/index.html"
+workers_dev = true
+
+[site]
+bucket = "./out"
+entry-point = "."
+
+pages_build_output_dir = "./out"
