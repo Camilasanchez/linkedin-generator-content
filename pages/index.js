@@ -8,11 +8,13 @@ export default function Home() {
     gender: "",
     profession: "",
     company: "",
-    interests: "",
+    purpose: "",
+    extraFeatures: ""
   });
   const [topic, setTopic] = useState("");
   const [tone, setTone] = useState("Profesional");
   const [generatedPost, setGeneratedPost] = useState("");
+  const [generatedComments, setGeneratedComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -40,18 +42,38 @@ export default function Home() {
 
     setLoading(true);
     try {
-       
-      
       const response = await axios.post("/api/generate", {
         topic,
         profile,
         tone,
+        purpose: formData.purpose,
+        extraFeatures: formData.extraFeatures
       });
-    
+
       setGeneratedPost(response.data.post);
     } catch (error) {
       console.error("Error generando el post:", error);
       alert(`Error al generar el post: ${
+        error.response?.data?.error || error.message || "Error desconocido"
+      }`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGenerateComment = async () => {
+    if (!generatedPost) return;
+
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/generate-comment", {
+        postContent: generatedPost
+      });
+
+      setGeneratedComments(response.data.comments);
+    } catch (error) {
+      console.error("Error generando el comentario:", error);
+      alert(`Error al generar el comentario: ${
         error.response?.data?.error || error.message || "Error desconocido"
       }`);
     } finally {
@@ -77,23 +99,59 @@ export default function Home() {
         <main className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">Crea tu perfil</h2>
           <form className="space-y-4" onSubmit={handleProfileSubmit}>
-            {[
-              { name: "name", placeholder: "Nombre" },
-              { name: "gender", placeholder: "Género" },
-              { name: "profession", placeholder: "Profesión" },
-              { name: "company", placeholder: "Empresa" },
-              { name: "interests", placeholder: "Temas de interés (opcional)" },
-            ].map((input) => (
-              <input
-                key={input.name}
-                type="text"
-                name={input.name}
-                placeholder={input.placeholder}
-                className="w-full p-2 border border-gray-300 rounded-lg"
-                onChange={handleProfileChange}
-                required={input.name !== "interests"}
-              />
-            ))}
+            <input
+              type="text"
+              name="name"
+              placeholder="Nombre"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              onChange={handleProfileChange}
+              required
+            />
+
+            <select
+              name="gender"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              onChange={handleProfileChange}
+              required
+            >
+              <option value="">Género</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="No Binario">No Binario</option>
+              <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+              <option value="Otro">Otro</option>
+            </select>
+
+            <input
+              type="text"
+              name="profession"
+              placeholder="Profesión (opcional)"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              onChange={handleProfileChange}
+            />
+
+            <input
+              type="text"
+              name="company"
+              placeholder="Empresa (opcional)"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              onChange={handleProfileChange}
+            />
+
+            <textarea
+              name="purpose"
+              placeholder="¿Cuál es tu propósito en la vida?"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              onChange={handleProfileChange}
+              required
+            />
+
+            <textarea
+              name="extraFeatures"
+              placeholder="Características extras (opcional)"
+              className="w-full p-2 border border-gray-300 rounded-lg"
+              onChange={handleProfileChange}
+            />
 
             <button
               type="submit"
@@ -162,6 +220,26 @@ export default function Home() {
                   Generar Otro
                 </button>
               </div>
+
+              <button
+                onClick={handleGenerateComment}
+                className="w-full bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600 transition mt-4"
+              >
+                ¿Quieres generar un comentario relacionado a tu post?
+              </button>
+
+              {generatedComments.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold">Comentarios Generados</h3>
+                  <ul className="list-disc list-inside">
+                    {generatedComments.map((comment, index) => (
+                      <li key={index} className="mt-2 text-gray-800">
+                        {comment}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </section>
           )}
         </main>
@@ -169,3 +247,4 @@ export default function Home() {
     </div>
   );
 }
+
