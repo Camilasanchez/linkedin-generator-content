@@ -14,6 +14,7 @@ export default function Home() {
   const [topic, setTopic] = useState("");
   const [tone, setTone] = useState("Profesional");
   const [generatedPost, setGeneratedPost] = useState("");
+  const [generatedComments, setGeneratedComments] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
