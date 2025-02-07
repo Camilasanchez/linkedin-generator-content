@@ -37,11 +37,21 @@ export default async function handler(req, res) {
       messages: [{ role: "user", content: prompt }],
     });
 
-    const comments = completion.choices[0].message.content.split("\n").filter(comment => comment.trim() !== "");
+    // Separamos por líneas y filtramos las vacías
+    let comments = completion.choices[0].message.content
+      .split("\n")
+      .filter(comment => comment.trim() !== "");
+
+    // Limpia delimitadores de bloques de código (por ejemplo, ```json o ```)
+    comments = comments.map(comment =>
+      comment.replace(/```json\s*/g, "").replace(/```/g, "")
+    );
 
     res.status(200).json({ comments });
   } catch (error) {
     console.error("Error en la API de OpenAI:", error);
     res.status(500).json({ error: "Error generando los comentarios. Intenta nuevamente más tarde." });
   }
+}
+
 }
