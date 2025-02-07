@@ -161,7 +161,7 @@ export default function Home() {
               onChange={handleProfileChange}
               required
             ></textarea>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-xs">
               Comparte qué te inspira y cuál es el impacto que deseas generar
               con tu trabajo. Ejemplo: Impulsar la equidad de género en la
               tecnología, promover el trabajo remoto, mejorar la educación en
@@ -174,7 +174,7 @@ export default function Home() {
               className="w-full p-2 border border-gray-300 rounded-lg"
               onChange={handleProfileChange}
             ></textarea>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-xs">
               Describe frases o palabras que sean parte de tu estilo y te gustaría
               incluir en tus publicaciones. Ejemplo: Vamos con todo,
               Innovación sin límites, Aprender cada día.
@@ -245,14 +245,6 @@ export default function Home() {
                   Comentar en tu propio post inmediatamente después de
                   publicarlo <strong>aumenta su alcance y visibilidad.</strong>{" "}
                   LinkedIn detecta la interacción temprana y muestra tu contenido a más personas.
-                </p>
-                <p className="text-gray-700 mt-2">
-                  Además, un comentario bien pensado puede{" "}
-                  <strong>
-                    reforzar tu mensaje, generar más conversaciones y atraer
-                    nuevas oportunidades.
-                  </strong>{" "}
-                  ¡No pierdas la oportunidad de potenciar tu publicación!
                 </p>
               </div>
 
