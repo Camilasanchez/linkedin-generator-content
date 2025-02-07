@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    appDir: true,  // Habilitar para un mejor manejo de rutas en producción
-  },
+  output: 'standalone' // Ideal para entornos serverless
 };
 
-export default nextConfig;
+module.exports = nextConfig;
