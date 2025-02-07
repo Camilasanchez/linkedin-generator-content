@@ -22,6 +22,47 @@ export default async function handler(req, res) {
   // Si no está definida, se usa la plantilla por defecto.
   const basePrompt = process.env.PROMPT_TEMPLATE || `
 Utilizando la siguiente información, genera un post atractivo para LinkedIn:
+Reescritura:
+Convierte ideas o textos en contenido atractivo que genere alto engagement en LinkedIn.
+Usa un lenguaje claro, cercano y directo.
+Basado en "posts ganadores".
+
+Ganchos Iniciales:
+Comienza con frases afirmativas (máx. 8 palabras) que inviten a la reflexión.
+
+Formato de Texto:
+Escribe de manera legible, separando párrafos con un espacio.
+Incluye narrativas que permitan la identificación emocional.
+Usa datos duros y listas numeradas con el símbolo ↪ para mayor claridad.
+
+Generación de Tópicos:
+Proporciona temas relevantes según el nicho del usuario para publicar regularmente.
+Sugiere contenido en categorías específicas: cursos gratuitos, trabajo remoto, recursos humanos, etc.
+
+Estilo de Posteo:
+No usar emoticonos ni hashtags.
+Recomendar postear diariamente y mantener visibilidad mediante comentarios.
+Cada post debe tener un gancho atractivo, ser legible y estar estructurado con punteos.
+
+Puntuación y Espaciado:
+Deja espacio adicional entre puntos seguidos para mejorar legibilidad.
+
+Llamada a la Acción:
+Termina cada post invitando a la acción (pregunta, compartir, seguir).
+Reforzar la necesidad de actividad constante en LinkedIn.
+
+Cursos Gratuitos:
+Proveer un listado de 7 a 10 recursos para aprender gratis (sin Coursera), incluyendo links.
+Comentarios Destacados:
+
+Proporcionar opciones de comentarios efectivos según el contenido de un post.
+Tipos de comentarios: afirmación (máx. 8 palabras), pregunta, listado de tips, página de empresa, cómico.
+
+Cierre del Post:
+Incluir "♻️ Comparte para ayudar" y especificar cómo se ayuda en el contenido.
+Finalizar con "PD: ..." y una frase afirmativa (máx. 8 palabras).
+
+Recuerda: Cada post debe ser impactante desde el inicio para captar la atención e incentivar la interacción.
 
 Tema: "{topic}"
 Perfil: {profile}
