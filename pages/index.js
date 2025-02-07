@@ -1,8 +1,8 @@
-// pages/index.js
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Home() {
+  // Estados para el perfil, formulario, post y comentarios
   const [profile, setProfile] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -19,6 +19,7 @@ export default function Home() {
   const [loadingPost, setLoadingPost] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
 
+  // Al iniciar, carga el perfil guardado en localStorage (si existe)
   useEffect(() => {
     const savedProfile = localStorage.getItem("userProfile");
     if (savedProfile) {
@@ -26,22 +27,24 @@ export default function Home() {
     }
   }, []);
 
+  // Maneja el cambio en cualquiera de los inputs del formulario
   const handleProfileChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Guarda el perfil en localStorage y lo establece en el estado
   const handleProfileSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("userProfile", JSON.stringify(formData));
     setProfile(formData);
   };
 
+  // Función para generar el post usando los datos del perfil y del tema
   const handleGeneratePost = async () => {
     if (!topic) {
       alert("Por favor ingresa un tema para el post.");
       return;
     }
-
     setLoadingPost(true);
     setGeneratedPost("");
     setGeneratedComments([]);
@@ -54,7 +57,6 @@ export default function Home() {
         purpose: formData.purpose,
         extraFeatures: formData.extraFeatures
       });
-
       setGeneratedPost(response.data.post);
     } catch (error) {
       console.error("Error generando el post:", error);
@@ -68,16 +70,15 @@ export default function Home() {
     }
   };
 
+  // Función para generar los comentarios basados en el post generado
   const handleGenerateComment = async () => {
     if (!generatedPost) return;
-
     setLoadingComments(true);
 
     try {
       const response = await axios.post("/api/generate-comment", {
         postContent: generatedPost
       });
-
       setGeneratedComments(response.data.comments || []);
     } catch (error) {
       console.error("Error generando comentarios:", error);
@@ -91,6 +92,7 @@ export default function Home() {
     }
   };
 
+  // Función para copiar el post generado al portapapeles
   const handleCopyPost = () => {
     navigator.clipboard.writeText(generatedPost);
     alert("¡Post copiado al portapapeles!");
@@ -98,6 +100,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 flex flex-col items-center">
+      {/* Encabezado */}
       <header className="w-full max-w-2xl text-center py-4">
         <h1 className="text-3xl font-bold text-blue-700">
           Generador de Posts para LinkedIn
@@ -107,6 +110,7 @@ export default function Home() {
         </p>
       </header>
 
+      {/* Si no existe perfil, muestra el formulario de creación de perfil */}
       {!profile ? (
         <main className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">Crea tu perfil</h2>
@@ -156,14 +160,25 @@ export default function Home() {
               className="w-full p-2 border border-gray-300 rounded-lg"
               onChange={handleProfileChange}
               required
-            />
+            ></textarea>
+            <p className="text-gray-500 text-sm">
+              Comparte qué te inspira y cuál es el impacto que deseas generar
+              con tu trabajo. Ejemplo: Impulsar la equidad de género en la
+              tecnología, promover el trabajo remoto, mejorar la educación en
+              ciencia y tecnología.
+            </p>
 
             <textarea
               name="extraFeatures"
               placeholder="Características extras (opcional)"
               className="w-full p-2 border border-gray-300 rounded-lg"
               onChange={handleProfileChange}
-            />
+            ></textarea>
+            <p className="text-gray-500 text-sm">
+              Describe frases o palabras que sean parte de tu estilo y te gustaría
+              incluir en tus publicaciones. Ejemplo: "Vamos con todo",
+              "Innovación sin límites", "Aprender cada día".
+            </p>
 
             <button
               type="submit"
@@ -174,6 +189,7 @@ export default function Home() {
           </form>
         </main>
       ) : (
+        // Si el perfil está creado, muestra la interfaz para generar el post y los comentarios
         <main className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">Escribe tu post</h2>
           <input
@@ -213,30 +229,55 @@ export default function Home() {
                 className="w-full h-40 p-2 border border-gray-300 rounded-lg mt-2"
                 value={generatedPost}
               ></textarea>
+              <button
+                onClick={handleCopyPost}
+                className="mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+              >
+                Copiar Post
+              </button>
 
-              <div className="flex gap-4 mt-4">
-                <button
-                  onClick={handleGenerateComment}
-                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition"
-                >
-                  {loadingComments ? "Generando comentarios..." : "Generar Comentarios"}
-                </button>
-                <button
-                  onClick={handleCopyPost}
-                  className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
-                >
-                  Copiar Post
-                </button>
+              {/* Sección informativa sobre la importancia de los comentarios */}
+              <div className="bg-gray-100 p-4 mt-4 rounded-md text-center">
+                <h3 className="font-semibold text-lg">
+                  💡 Un Comentario Puede Impulsar Tu Post 🚀
+                </h3>
+                <p className="text-gray-700 mt-2">
+                  Comentar en tu propio post inmediatamente después de
+                  publicarlo <strong>aumenta su alcance y visibilidad.</strong>{" "}
+                  LinkedIn detecta la interacción temprana y muestra tu contenido a más personas.
+                </p>
+                <p className="text-gray-700 mt-2">
+                  Además, un comentario bien pensado puede{" "}
+                  <strong>
+                    reforzar tu mensaje, generar más conversaciones y atraer
+                    nuevas oportunidades.
+                  </strong>{" "}
+                  ¡No pierdas la oportunidad de potenciar tu publicación!
+                </p>
               </div>
 
+              {/* Botón para generar comentarios */}
+              <button
+                onClick={handleGenerateComment}
+                disabled={loadingComments}
+                className="w-full bg-teal-500 text-white py-2 rounded-lg hover:bg-teal-600 transition mt-4"
+              >
+                {loadingComments
+                  ? "Generando comentarios..."
+                  : "Genera un comentario ahora y maximiza tu impacto."}
+              </button>
+
               {generatedComments.length > 0 && (
-                <ul className="mt-4 p-4 bg-gray-200 rounded-lg">
-                  {generatedComments.map((comment, index) => (
-                    <li key={index} className="mb-2">
-                      {comment}
-                    </li>
-                  ))}
-                </ul>
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold">Comentarios Generados</h3>
+                  <ul className="list-disc list-inside">
+                    {generatedComments.map((comment, index) => (
+                      <li key={index} className="mt-2 text-gray-800">
+                        {comment}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
             </section>
           )}
