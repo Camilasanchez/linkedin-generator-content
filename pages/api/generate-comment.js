@@ -17,18 +17,19 @@ export default async function handler(req, res) {
 
   try {
     const prompt = `
-      Basándote en el siguiente post de LinkedIn:
-
+      📢 **Genera 5 comentarios estratégicos para maximizar la interacción en este post de LinkedIn:**
+      
       "${postContent}"
 
-      Genera 5 comentarios destacados para lograr más interacción:
-      1. Comentario afirmación (máximo 8 palabras).
-      2. Comentario pregunta que invite a reflexionar.
-      3. Comentario con tips pro (usa un título llamativo).
-      4. Comentario tipo página de empresa (tono profesional).
-      5. Comentario cómico para generar simpatía.
+      🎯 **Reglas:**
+      1️⃣ **Comentario de afirmación** (máximo 8 palabras, refuerza el mensaje del post).
+      2️⃣ **Comentario con pregunta** (fomenta la reflexión y el debate).
+      3️⃣ **Comentario con un tip extra** (agrega valor con un título llamativo).
+      4️⃣ **Comentario en tono profesional** (como si fuera una página de empresa).
+      5️⃣ **Comentario con humor** (para generar simpatía y engagement).
 
-      Asegúrate de que cada comentario sea breve, claro y atractivo.
+      📌 **Formato de salida:**  
+      Devuelve los comentarios como un array en formato JSON.
     `;
 
     const completion = await openai.chat.completions.create({
