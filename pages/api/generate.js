@@ -26,16 +26,17 @@ export default async function handler(req, res) {
       Propósito de vida: ${purpose || "No especificado"}.
       Características extras: ${extraFeatures || "No especificadas"}.
 
-      Reglas para el post:
-      - Cuando partas con gancho, debe  ser con frases afirmativas (ideal 8 palabras máximo), que hagan cuestionarse a las personas..
-      - Texto legible, saltando una línea por cada punto
-      - Utiliza un lenguaje cercano, claro y directo. Todo esto basado en "posts ganadores" previamente probados en LinkedIn 
+      📌 **Reglas para el post:**
+      - Usa un gancho inicial potente (máximo 8 palabras).
+      - Texto legible, con saltos de línea en cada punto.
+      - Lenguaje cercano, claro y directo, optimizado para LinkedIn.
       - Incluye datos numéricos concretos si es posible.
-      - Usa punteos con ↪ para listas.
-      - Si el item características extras del formulario está completo, usa la información para cerrar el post.
-      - Termina con "♻️ Comparte para ayudar" y un PD final con un llamado a la acción de máximo 8 palabras afirmativas.
+      - Usa punteos con ↪ para listas clave.
+      - Si el usuario especificó "Características extras", úsalas para cerrar el post con su toque personal.
+      - Finaliza con: "♻️ Comparte para ayudar".
+      - Agrega un **P.D.** con un llamado a la acción (máximo 8 palabras).
 
-      El objetivo es generar el máximo de engagement en LinkedIn.
+      🎯 **El objetivo es generar el máximo de engagement en LinkedIn.**
     `;
 
     const completion = await openai.chat.completions.create({
