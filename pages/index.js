@@ -244,7 +244,7 @@ export default function Home() {
                 <p className="text-gray-700 mt-2">
                   Comentar en tu propio post inmediatamente después de
                   publicarlo <strong>aumenta su alcance y visibilidad.</strong>{" "}
-                  LinkedIn detecta la interacción temprana y muestra tu contenido a más personas.
+          
                 </p>
               </div>
 
