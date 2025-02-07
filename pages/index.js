@@ -15,7 +15,8 @@ export default function Home() {
   const [tone, setTone] = useState("Profesional");
   const [generatedPost, setGeneratedPost] = useState("");
   const [generatedComments, setGeneratedComments] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(false);
+  const [loadingComments, setLoadingComments] = useState(false);
 
   useEffect(() => {
     const savedProfile = localStorage.getItem("userProfile");
@@ -40,7 +41,10 @@ export default function Home() {
       return;
     }
 
-    setLoading(true);
+    setLoadingPost(true);
+    setGeneratedPost("");
+    setGeneratedComments([]);
+
     try {
       const response = await axios.post("/api/generate", {
         topic,
@@ -57,7 +61,28 @@ export default function Home() {
         error.response?.data?.error || error.message || "Error desconocido"
       }`);
     } finally {
-      setLoading(false);
+      setLoadingPost(false);
+    }
+  };
+
+  const handleGenerateComment = async () => {
+    if (!generatedPost) return;
+
+    setLoadingComments(true);
+
+    try {
+      const response = await axios.post("/api/generate-comment", {
+        postContent: generatedPost
+      });
+
+      setGeneratedComments(response.data.comments || []);
+    } catch (error) {
+      console.error("Error generando comentarios:", error);
+      alert(`Error al generar comentarios: ${
+        error.response?.data?.error || error.message || "Error desconocido"
+      }`);
+    } finally {
+      setLoadingComments(false);
     }
   };
 
@@ -143,9 +168,7 @@ export default function Home() {
         </main>
       ) : (
         <main className="bg-white p-6 rounded-lg shadow-md w-full max-w-2xl">
-          <h2 className="text-2xl font-semibold mb-4">
-            ¿Sobre qué tema te gustaría escribir hoy?
-          </h2>
+          <h2 className="text-2xl font-semibold mb-4">Escribe tu post</h2>
           <input
             type="text"
             placeholder="Tema"
@@ -169,37 +192,28 @@ export default function Home() {
 
           <button
             onClick={handleGeneratePost}
-            disabled={loading}
-            className={`w-full py-2 rounded-lg transition ${
-              loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700 text-white"
-            }`}
+            disabled={loadingPost}
+            className="w-full py-2 rounded-lg transition bg-indigo-600 hover:bg-indigo-700 text-white"
           >
-            {loading ? "Generando..." : "Generar Post"}
+            {loadingPost ? "Generando..." : "Generar Post"}
           </button>
 
           {generatedPost && (
             <section className="mt-6">
               <h2 className="text-xl font-semibold">Post Generado</h2>
-              <textarea
-                readOnly
-                className="w-full h-40 p-2 border border-gray-300 rounded-lg mt-2"
-                value={generatedPost}
-              ></textarea>
+              <textarea readOnly className="w-full h-40 p-2 border border-gray-300 rounded-lg mt-2" value={generatedPost}></textarea>
 
-              <div className="flex gap-4 mt-4">
-                <button
-                  onClick={handleCopyPost}
-                  className="flex-1 bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition"
-                >
-                  Copiar Post
-                </button>
-                <button
-                  onClick={() => setGeneratedPost("")}
-                  className="flex-1 bg-slate-500 text-white py-2 rounded-lg hover:bg-slate-600 transition"
-                >
-                  Generar Otro
-                </button>
-              </div>
+              <button onClick={handleGenerateComment} className="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                {loadingComments ? "Generando comentarios..." : "Generar Comentarios"}
+              </button>
+
+              {generatedComments.length > 0 && (
+                <ul className="mt-4 p-4 bg-gray-200 rounded-lg">
+                  {generatedComments.map((comment, index) => (
+                    <li key={index} className="mb-2">{comment}</li>
+                  ))}
+                </ul>
+              )}
             </section>
           )}
         </main>
