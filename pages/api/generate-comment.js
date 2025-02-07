@@ -29,7 +29,8 @@ export default async function handler(req, res) {
       5️⃣ **Comentario con humor** (para generar simpatía y engagement).
 
       📌 **Formato de salida:**  
-      Devuelve los comentarios como un array en formato JSON.
+      Devuelve los comentarios en **texto plano**, sin JSON, sin etiquetas de código.
+      Separa cada comentario con un salto de línea.
     `;
 
     const completion = await openai.chat.completions.create({
@@ -37,14 +38,12 @@ export default async function handler(req, res) {
       messages: [{ role: "user", content: prompt }],
     });
 
+    // Divide la respuesta en líneas y filtra vacíos
     let comments = completion.choices[0].message.content
+      .trim()
       .split("\n")
+      .map(comment => comment.replace(/^[-\d.]+\s*/, "")) // Elimina números o viñetas al inicio
       .filter(comment => comment.trim() !== "");
-
-    // Limpia los delimitadores de bloque y la palabra "json"
-    comments = comments.map(comment =>
-      comment.replace(/```json\s*/g, "").replace(/```/g, "")
-    );
 
     res.status(200).json({ comments });
   } catch (error) {
