@@ -168,16 +168,14 @@ export default function Home() {
               ciencia y tecnología.
             </p>
 
-            <textarea
-              name="extraFeatures"
-              placeholder="Características extras (opcional)"
-              className="w-full p-2 border border-gray-300 rounded-lg"
-              onChange={handleProfileChange}
-            ></textarea>
-            <p className="text-gray-500 text-xs">
-              Describe frases o palabras que sean parte de tu estilo y te gustaría
-              incluir en tus publicaciones. Ejemplo: Vamos con todo,
-              Innovación sin límites, Aprender cada día.
+           <textarea
+                name="extraFeatures"
+                placeholder="Características extras (opcional)"
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                onChange={handleProfileChange}
+              ></textarea>
+      <p className="text-gray-500 text-xs">
+        Describe frases o palabras que sean parte de tu estilo y te gustaría incluir en tus publicaciones. Ejemplo: &quot;Vamos con todo&quot;, &quot;Innovación sin límites&quot;, &quot;Aprender cada día&quot;.
             </p>
 
             <button
