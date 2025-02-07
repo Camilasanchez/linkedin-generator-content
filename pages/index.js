@@ -176,8 +176,8 @@ export default function Home() {
             ></textarea>
             <p className="text-gray-500 text-sm">
               Describe frases o palabras que sean parte de tu estilo y te gustaría
-              incluir en tus publicaciones. Ejemplo: "Vamos con todo",
-              "Innovación sin límites", "Aprender cada día".
+              incluir en tus publicaciones. Ejemplo: Vamos con todo,
+              Innovación sin límites, Aprender cada día.
             </p>
 
             <button
