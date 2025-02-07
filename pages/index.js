@@ -1,3 +1,4 @@
+// pages/index.js
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -46,7 +47,7 @@ export default function Home() {
     setGeneratedComments([]);
 
     try {
-      const response = await axios.post("/api/generate", {
+      const response = await axios.post("/api/generate-post", {
         topic,
         profile,
         tone,
@@ -57,9 +58,11 @@ export default function Home() {
       setGeneratedPost(response.data.post);
     } catch (error) {
       console.error("Error generando el post:", error);
-      alert(`Error al generar el post: ${
-        error.response?.data?.error || error.message || "Error desconocido"
-      }`);
+      alert(
+        `Error al generar el post: ${
+          error.response?.data?.error || error.message || "Error desconocido"
+        }`
+      );
     } finally {
       setLoadingPost(false);
     }
@@ -78,9 +81,11 @@ export default function Home() {
       setGeneratedComments(response.data.comments || []);
     } catch (error) {
       console.error("Error generando comentarios:", error);
-      alert(`Error al generar comentarios: ${
-        error.response?.data?.error || error.message || "Error desconocido"
-      }`);
+      alert(
+        `Error al generar comentarios: ${
+          error.response?.data?.error || error.message || "Error desconocido"
+        }`
+      );
     } finally {
       setLoadingComments(false);
     }
@@ -97,7 +102,9 @@ export default function Home() {
         <h1 className="text-3xl font-bold text-blue-700">
           Generador de Posts para LinkedIn
         </h1>
-        <p className="text-gray-600">Crea publicaciones atractivas en segundos</p>
+        <p className="text-gray-600">
+          Crea publicaciones atractivas en segundos
+        </p>
       </header>
 
       {!profile ? (
@@ -201,16 +208,33 @@ export default function Home() {
           {generatedPost && (
             <section className="mt-6">
               <h2 className="text-xl font-semibold">Post Generado</h2>
-              <textarea readOnly className="w-full h-40 p-2 border border-gray-300 rounded-lg mt-2" value={generatedPost}></textarea>
+              <textarea
+                readOnly
+                className="w-full h-40 p-2 border border-gray-300 rounded-lg mt-2"
+                value={generatedPost}
+              ></textarea>
 
-              <button onClick={handleGenerateComment} className="mt-4 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-                {loadingComments ? "Generando comentarios..." : "Generar Comentarios"}
-              </button>
+              <div className="flex gap-4 mt-4">
+                <button
+                  onClick={handleGenerateComment}
+                  className="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition"
+                >
+                  {loadingComments ? "Generando comentarios..." : "Generar Comentarios"}
+                </button>
+                <button
+                  onClick={handleCopyPost}
+                  className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                >
+                  Copiar Post
+                </button>
+              </div>
 
               {generatedComments.length > 0 && (
                 <ul className="mt-4 p-4 bg-gray-200 rounded-lg">
                   {generatedComments.map((comment, index) => (
-                    <li key={index} className="mb-2">{comment}</li>
+                    <li key={index} className="mb-2">
+                      {comment}
+                    </li>
                   ))}
                 </ul>
               )}
